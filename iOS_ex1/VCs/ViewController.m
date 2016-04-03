@@ -103,6 +103,7 @@ static const CGSize kCARD_SIZE = {45, 60};
 
 - (void)createUIDeck:(BOOL)animate {
   [[self.gameView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+  self.gridCardOrder = nil;
   NSArray * visibleCards = [self getVisibleCards];
   
   for (id <Card> card in visibleCards) {

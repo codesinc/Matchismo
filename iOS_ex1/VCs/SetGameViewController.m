@@ -66,6 +66,7 @@
 
 - (IBAction)moreTouchButton:(UIButton *)sender {
   [self.game addCards];
+//  self.gridCardOrder = nil;
   [self createUIDeck:YES];
 }
 
