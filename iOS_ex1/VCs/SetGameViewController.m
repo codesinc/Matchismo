@@ -66,7 +66,7 @@
 
 - (IBAction)moreTouchButton:(UIButton *)sender {
   [self.game addCards];
-  [self createUIDeck:NO];
+  [self createUIDeck:YES];
 }
 
 - (void)updateUI {
