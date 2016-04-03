@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[PlayingCardGameViewController getVisibleCards]:PlayingCardGameViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[CardMatchingGame initWithCardCount:usingDeck:usingMatcher:usingDealer:usingGameMode:]:CardMatchingGame.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController createUIDeck]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PlayingCardView initWithFrame:]:PlayingCardView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[PlayingCardView setup]:PlayingCardView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController getGame:]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController viewWillAppear:]:ViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[ViewController createUIDeck:]:ViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.gridCardOrder">
+            </PersistentString>
+            <PersistentString
+               value = "self.gridCardOrder.columnCount">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[PlayingCardView drawRect:]:PlayingCardView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.bounds.width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
