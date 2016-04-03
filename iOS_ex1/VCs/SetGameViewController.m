@@ -92,7 +92,7 @@
                        completion:^(BOOL fin){ if (fin) {
         [cardView removeFromSuperview];
         self.duringAnimation = false;
-        [self placeUIDeck];
+        [self placeUIDeck:NO];
       } }];
       //[cardView removeFromSuperview];
     }

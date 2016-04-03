@@ -17,7 +17,7 @@
 - (Deck *)createDeck;
 - (NSArray *)getVisibleCards;
 - (void)createUIDeck:(BOOL)animate;
-- (void)placeUIDeck;
+- (void)placeUIDeck:(BOOL)extractPile;
 - (id <CardDealer>)createDealer;
 - (id <CardMatcher>)createMatcher;
 - (NSUInteger)gameMode;

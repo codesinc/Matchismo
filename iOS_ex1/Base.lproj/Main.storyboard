@@ -37,6 +37,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pDw-iL-gur">
                                 <rect key="frame" x="0.0" y="64" width="600" height="401"/>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <gestureRecognizers/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sDE-lc-y1L">
                                 <rect key="frame" x="20" y="473" width="560" height="23"/>
@@ -49,6 +50,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="pDw-iL-gur" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="2vZ-2f-RWF"/>
                             <constraint firstItem="jik-Qs-EHg" firstAttribute="top" secondItem="pDw-iL-gur" secondAttribute="bottom" constant="8" symbolic="YES" id="87q-tJ-e69"/>
@@ -135,6 +137,7 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="S8t-PA-wJm" firstAttribute="top" secondItem="pBP-4N-OvL" secondAttribute="bottom" constant="7" id="4Id-BB-2bw"/>
                             <constraint firstItem="mxh-71-IaQ" firstAttribute="leading" secondItem="SVv-Ct-vBV" secondAttribute="leading" constant="139" id="4b4-fA-s5P"/>

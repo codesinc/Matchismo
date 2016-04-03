@@ -7,6 +7,7 @@
 
 @interface ViewController ()
 @property (readwrite, nonatomic) Grid * gridCardOrder;
+@property (nonatomic) BOOL extractPile;
 
 @end
 
@@ -65,13 +66,13 @@ static const CGSize kCARD_SIZE = {45, 60};
   
   // geometry set
   if (!self.duringAnimation) {
-    [self placeUIDeck];
+    [self placeUIDeck:NO];
   }
   
   self.gridCardOrder = nil;
   
   
-//  });
+  //  });
   
 }
 
@@ -86,6 +87,12 @@ static const CGSize kCARD_SIZE = {45, 60};
 //The event handling method
 - (void)touchCard:(UITapGestureRecognizer *)recognizer {
   if (![recognizer.view isKindOfClass:[CardView class]]) {
+    return;
+  }
+  
+  if (self.extractPile) {
+    [self createUIDeck:YES];
+    self.extractPile = NO;
     return;
   }
   
@@ -117,7 +124,9 @@ static const CGSize kCARD_SIZE = {45, 60};
     UITapGestureRecognizer *tapRecognizer =
     [[UITapGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(touchCard:)];
+    
     [cardView addGestureRecognizer:tapRecognizer];
+    
     
     if (animate) {
       cardView.alpha = 0.0;
@@ -132,10 +141,14 @@ static const CGSize kCARD_SIZE = {45, 60};
   [self updateUI];
 }
 
-- (void)placeUIDeck {
+- (void)placeUIDeck:(BOOL)extractPile {
   NSArray * visibleCards = [self getVisibleCards];
   
   for (CardView * cardView in self.gameView.subviews) {
+    if (extractPile) {
+      cardView.alpha = 1;
+    }
+    
     id <Card> card = cardView.card;
     NSUInteger cardIndex = [visibleCards indexOfObject:card];
     
@@ -154,13 +167,62 @@ static const CGSize kCARD_SIZE = {45, 60};
 
 - (void) viewDidAppear:(BOOL)animated {
   [super viewDidAppear:animated];
-//  [self createUIDeck:NO];
-  [self placeUIDeck];
+  //  [self createUIDeck:NO];
+  [self placeUIDeck:NO];
 }
+
+
+//The event handling method
+- (void)extractPile:(UITapGestureRecognizer *)recognizer {
+  [self placeUIDeck:YES];
+}
+- (void)pinch:(UIPinchGestureRecognizer *)gesture
+{
+  CardView *head = self.gameView.subviews[0];
+  
+//  UITapGestureRecognizer *extractRecognizer =
+//  [[UITapGestureRecognizer alloc] initWithTarget:self
+//                                            action:@selector(extractPile:)];
+//  [self.view addGestureRecognizer:extractRecognizer];
+  
+  for (CardView *cardView in [self.gameView subviews]) {
+    id <Card> card = cardView.card;
+    NSUInteger cardIndex = [self.game findCard:card];
+    
+    
+    [UIView animateWithDuration:1.0
+                          delay:0.1*cardIndex
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                       if (cardView != head) {
+                         cardView.center = self.gameView.bounds.origin;
+                         cardView.alpha = 0;
+                       }
+                       
+                       self.duringAnimation = YES;
+                     }
+                     completion:^(BOOL fin){ if (fin) {
+      self.duringAnimation = false;
+      self.extractPile = YES;
+//      [head removeGestureRecognizer:extractRecognizer];
+    } }];
+    
+  }
+  
+}
+
 -(void)viewDidLoad {
   [super viewDidLoad];
   [self createGame];
   [self createUIDeck:YES];
+  
+  
+  UIPinchGestureRecognizer *pinchRecognizer =
+  [[UIPinchGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(pinch:)];
+  [self.gameView addGestureRecognizer:pinchRecognizer];
+  
+  
 }
 
 
