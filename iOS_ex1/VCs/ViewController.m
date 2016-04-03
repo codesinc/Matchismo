@@ -7,21 +7,15 @@
 
 @interface ViewController ()
 @property (readwrite, nonatomic) Grid * gridCardOrder;
+@property (readwrite, nonatomic) CardMatchingGame *game;
 @property (nonatomic) BOOL extractPile;
-
 @end
 
 @implementation ViewController
 
 static const CGSize kCARD_SIZE = {45, 60};
 
-- (void)createGame {
-  self.game = [[CardMatchingGame alloc] initWithCardCount:[self startCardGameCount]
-                                                usingDeck:[self createDeck]
-                                             usingMatcher:[self createMatcher]
-                                              usingDealer:[self createDealer]
-                                            usingGameMode: [self gameMode]];
-}
+#pragma mark - To be implemented by subclasses methods
 
 - (Deck *)createDeck {
   return nil;
@@ -51,6 +45,15 @@ static const CGSize kCARD_SIZE = {45, 60};
   return nil;
 }
 
+-(id <CardDealer>)createDealer {
+  return nil;
+}
+
+- (CardView *)createCardView:(id <Card>)card withFrame:(CGRect)frame {
+  return nil;
+}
+
+#pragma mark - Properties
 - (Grid *)gridCardOrder {
   if (!_gridCardOrder) {
     _gridCardOrder  = [[Grid alloc] init];
@@ -61,45 +64,16 @@ static const CGSize kCARD_SIZE = {45, 60};
   return _gridCardOrder;
 }
 
--(void)viewDidLayoutSubviews {
-  [super viewDidLayoutSubviews];
-  
-  // geometry set
-  if (!self.duringAnimation) {
-    [self placeUIDeck:NO];
-  }
-  
-  self.gridCardOrder = nil;
-  
-  
-  //  });
-  
+#pragma mark - Implemented methods
+
+- (void)createGame {
+  self.game = [[CardMatchingGame alloc] initWithCardCount:[self startCardGameCount]
+                                                usingDeck:[self createDeck]
+                                             usingMatcher:[self createMatcher]
+                                              usingDealer:[self createDealer]
+                                            usingGameMode: [self gameMode]];
 }
 
--(id <CardDealer>)createDealer {
-  return nil;
-}
-
-- (CardView *)createCardView:(id <Card>)card withFrame:(CGRect)frame {
-  return nil;
-}
-
-//The event handling method
-- (void)touchCard:(UITapGestureRecognizer *)recognizer {
-  if (![recognizer.view isKindOfClass:[CardView class]]) {
-    return;
-  }
-  
-  if (self.extractPile) {
-    [self createUIDeck:YES];
-    self.extractPile = NO;
-    return;
-  }
-  
-  CardView * cardView = (CardView *)recognizer.view;
-  [self.game chooseCard:cardView.card];
-  [self updateUI];
-}
 
 - (void)createUIDeck:(BOOL)animate {
   [[self.gameView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -139,6 +113,7 @@ static const CGSize kCARD_SIZE = {45, 60};
                        completion:^(BOOL fin) { }];
     }
   }
+  
   [self updateUI];
 }
 
@@ -160,31 +135,37 @@ static const CGSize kCARD_SIZE = {45, 60};
   }
 }
 
+#pragma mark - Event handeling
 
 - (IBAction)touchRedealButton:(id)sender {
   [self createGame]; // Starting a new game
   [self createUIDeck:YES];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-  [super viewDidAppear:animated];
-  //  [self createUIDeck:NO];
-  [self placeUIDeck:NO];
+
+- (void)touchCard:(UITapGestureRecognizer *)recognizer {
+  if (![recognizer.view isKindOfClass:[CardView class]]) {
+    return;
+  }
+  
+  if (self.extractPile) {
+    [self createUIDeck:YES];
+    self.extractPile = NO;
+    return;
+  }
+  
+  CardView * cardView = (CardView *)recognizer.view;
+  [self.game chooseCard:cardView.card];
+  [self updateUI];
 }
 
-
-//The event handling method
 - (void)extractPile:(UITapGestureRecognizer *)recognizer {
   [self placeUIDeck:YES];
 }
+
 - (void)pinch:(UIPinchGestureRecognizer *)gesture
 {
   CardView *head = self.gameView.subviews[0];
-  
-//  UITapGestureRecognizer *extractRecognizer =
-//  [[UITapGestureRecognizer alloc] initWithTarget:self
-//                                            action:@selector(extractPile:)];
-//  [self.view addGestureRecognizer:extractRecognizer];
   
   for (CardView *cardView in [self.gameView subviews]) {
     id <Card> card = cardView.card;
@@ -205,11 +186,29 @@ static const CGSize kCARD_SIZE = {45, 60};
                      completion:^(BOOL fin){ if (fin) {
       self.duringAnimation = false;
       self.extractPile = YES;
-//      [head removeGestureRecognizer:extractRecognizer];
     } }];
     
   }
   
+}
+
+#pragma mark - Controller's life cycle
+
+- (void) viewDidAppear:(BOOL)animated {
+  [super viewDidAppear:animated];
+  [self placeUIDeck:NO];
+}
+
+
+-(void)viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
+  
+  // Geometry is set
+  if (!self.duringAnimation) {
+    [self placeUIDeck:NO];
+  }
+  
+  self.gridCardOrder = nil;
 }
 
 -(void)viewDidLoad {
@@ -217,13 +216,10 @@ static const CGSize kCARD_SIZE = {45, 60};
   [self createGame];
   [self createUIDeck:YES];
   
-  
   UIPinchGestureRecognizer *pinchRecognizer =
   [[UIPinchGestureRecognizer alloc] initWithTarget:self
                                             action:@selector(pinch:)];
   [self.gameView addGestureRecognizer:pinchRecognizer];
-  
-  
 }
 
 

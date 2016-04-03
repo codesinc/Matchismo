@@ -10,6 +10,8 @@
 
 @implementation Deck
 
+#pragma mark - Properties
+
 - (NSMutableArray *)cards {
   if (!_cards) {
     _cards = [[NSMutableArray alloc] init];
@@ -17,6 +19,8 @@
   
   return _cards;
 }
+
+#pragma mark - Public methods
 
 - (void)addCard:(id <Card>)card atTop:(BOOL)atTop {
   if (atTop) {

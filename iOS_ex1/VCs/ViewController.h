@@ -26,8 +26,10 @@
 
 
 @property (weak, nonatomic) IBOutlet UIView *gameView;
-@property (strong, nonatomic) CardMatchingGame *game;
+@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+
+@property (readonly, nonatomic) CardMatchingGame *game;
 @property (readonly, nonatomic) Grid * gridCardOrder;
 @property (nonatomic) BOOL duringAnimation;
-@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+
 @end

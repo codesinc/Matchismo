@@ -5,11 +5,6 @@
 
 @implementation CardView
 
-//- (void)setOn:(BOOL)on {
-//  _on = on;
-//  [self setNeedsDisplay];
-//}
-
 
 #pragma mark - Drawing
 
@@ -24,8 +19,8 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-  // Drawing code
-  UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:[self cornerRadius]];
+  UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds
+                                                         cornerRadius:[self cornerRadius]];
   
   [roundedRect addClip];
   

@@ -12,6 +12,8 @@
 
 @implementation PlayingCardGameViewController
 
+#pragma mark - Superclass implementation
+
 - (Deck *)createDeck {
   return [[PlayingCardDeck alloc] init];
 }
@@ -67,8 +69,6 @@
       cardView.faceUp = chosen;
     }
     if (matched) {
-//      cardView.tintColor = [UIColor redColor];
-//      cardView.backgroundColor = [UIColor grayColor];
       cardView.alpha = 0.5;
     }
   }

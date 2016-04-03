@@ -6,34 +6,22 @@
 
 @implementation SetCard
 
+#pragma mark - Properties
+
 - (NSString *)contents {
   return nil;
 }
-
-//+ (NSArray *)validSymbols {
-//  return @[@"▲", @"◼︎", @"●"];
-//}
-
-+ (NSUInteger)maxNumberOfSymbols {
-  return 3;
-}
-
-//@synthesize symbol = _symbol;
-//
-//- (NSString *)symbol {
-//  return _symbol ? _symbol : @"?";
-//}
-
-//- (void)setSymbol:(NSString *)symbol {
-//  if ([[SetCard validSymbols] containsObject:symbol]) {
-//    _symbol = symbol;
-//  }
-//}
 
 - (void)setNumberOfSymbols:(NSUInteger)numberOfSymbols {
   if (numberOfSymbols <= [SetCard maxNumberOfSymbols]) {
     _numberOfSymbols = numberOfSymbols;
   }
+}
+
+#pragma mark - Class methods
+
++ (NSUInteger)maxNumberOfSymbols {
+  return 3;
 }
 
 

@@ -13,6 +13,8 @@
 
 @implementation SetGameViewController
 
+#pragma mark - Superclass implementation
+
 - (Deck *)createDeck {
   return [[SetCardDeck alloc] init];
 }
@@ -64,12 +66,6 @@
   return 12;
 }
 
-- (IBAction)moreTouchButton:(UIButton *)sender {
-  [self.game addCards];
-//  self.gridCardOrder = nil;
-  [self createUIDeck:YES];
-}
-
 - (void)updateUI {
   for (SetCardView *cardView in [self.gameView subviews]) {
     SetCard * card = cardView.card;
@@ -95,17 +91,21 @@
         self.duringAnimation = false;
         [self placeUIDeck:NO];
       } }];
-      //[cardView removeFromSuperview];
     }
   }
-  
-  //[self placeUIDeck];
-  
   
   self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.gameScore];
   int moreCount = [self.game moreCardsCount];
   self.moreCards.hidden = !moreCount;
   
 }
+
+#pragma mark - Event handaling
+
+- (IBAction)moreTouchButton:(UIButton *)sender {
+  [self.game addCards];
+  [self createUIDeck:YES];
+}
+
 
 @end

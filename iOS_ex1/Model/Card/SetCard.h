@@ -26,11 +26,8 @@ typedef NS_ENUM(NSUInteger, SetCardShape) {
 
 @interface SetCard : NSObject <Card>
 
-//+ (NSArray *)validSymbols;
 + (NSUInteger)maxNumberOfSymbols;
 
-
-//@property (strong, nonatomic) NSString *symbol;
 @property (nonatomic) NSUInteger numberOfSymbols;
 @property (nonatomic) SetCardColor color;
 @property (nonatomic) SetCardShading shading;

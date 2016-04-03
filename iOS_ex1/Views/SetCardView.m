@@ -15,6 +15,8 @@
 
 @implementation SetCardView : CardView
 
+#pragma mark - Properties
+
 - (void)setChoosen:(BOOL)choosen {
   _choosen = choosen;
   [self setNeedsDisplay]; // Re-draw
@@ -28,6 +30,7 @@
   return _path;
 }
 
+#pragma mark - Drawing
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -120,6 +123,9 @@
   [self.path closePath];
   
 }
+
+#pragma mark - Shape attributes
+
 - (UIColor *)colorShape {
   SetCard * setCard = (SetCard *)self.card;
   UIColor *color = [UIColor blackColor];

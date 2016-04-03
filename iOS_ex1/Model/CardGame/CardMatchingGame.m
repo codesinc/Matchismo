@@ -6,15 +6,14 @@
 #import "CardState.h"
 
 @interface CardMatchingGame()
-@property (readwrite, nonatomic) NSInteger gameScore;
-//@property (strong, readwrite ,nonatomic) NSString *lastSessionlog;
-//@property (strong, readwrite ,nonatomic) NSArray *lastSessionCards;
 @property (strong, nonatomic) Deck *deck;
 @property (strong, nonatomic) NSMutableArray *cards;
-//@property (readwrite, nonatomic) NSInteger cardCount;
 @property (strong, nonatomic) NSMutableArray *cardsState;
-@property (readwrite, nonatomic) id cardDealer;
-@property (strong, nonatomic) NSMutableArray *nonMatchedCards;
+
+@property (strong, nonatomic) id <CardMatcher> gameMatcher;
+@property (strong, nonatomic) id <CardDealer> cardDealer;
+
+@property (readwrite, nonatomic) NSInteger gameScore;
 @end
 
 @implementation CardMatchingGame
@@ -27,20 +26,6 @@
   }
   return _cards;
 }
-
-//- (NSString *)lastSessionLog {
-//  if (!_lastSessionlog) {
-//    _lastSessionlog = [[NSString alloc] init];
-//  }
-//  return _lastSessionlog;
-//}
-
-//- (NSArray *)lastSessionCards {
-//  if (!_lastSessionCards) {
-//    _lastSessionCards = [[NSArray alloc] init];
-//  }
-//  return _lastSessionCards;
-//}
 
 - (NSMutableArray *)cardsState {
   if (!_cardsState) {
@@ -57,23 +42,7 @@
   _gameCardMode = cardMode;
 }
 
-- (NSMutableArray *)nonMatchedCards {
-  if (!_nonMatchedCards) {
-    _nonMatchedCards = [[NSMutableArray alloc] init];
-    for (int i =0; i < [self.cardsState count]; i++) {
-      CardState * card = (CardState *)self.cardsState[i];
-      if (!card.matched) {
-        [_nonMatchedCards addObject:self.cards[i]];
-      }
-    }
-  }
-  return _nonMatchedCards;
-}
 
-
-- (NSUInteger)cardCount {
-  return [[self cards] count];
-}
 
 #pragma mark - Private functions
 
@@ -86,6 +55,18 @@
     }
   }
   return chosen;
+}
+
+- (NSMutableArray *)nonMatchedCards {
+  NSMutableArray * nonMatchedCards = [[NSMutableArray alloc] init];
+  for (int i =0; i < [self.cardsState count]; i++) {
+    CardState * card = (CardState *)self.cardsState[i];
+    if (!card.matched) {
+      [nonMatchedCards addObject:self.cards[i]];
+    }
+    
+  }
+  return nonMatchedCards;
 }
 
 
@@ -109,32 +90,21 @@
 
 - (void)mismatchUpdate:(NSUInteger)index {
   self.gameScore -= kMISMATCH_PENALTY;
-//  self.lastSessionlog =[NSString stringWithFormat: @"Mismatch. Panelty -%d.", kMISMATCH_PENALTY];
-//  self.lastSessionCards = [self chosenCards];
   [self emptyChosenCards];
   CardState * cardState = (CardState *)self.cardsState[index];
   cardState.chosen = YES; // Add last card
 }
 
 - (void)matchUpdate {
-//  self.lastSessionCards = [self chosenCards];
   NSInteger bonus = self.gameCardMode * kMATCH_BONUS;
   self.gameScore += bonus;
-//  self.lastSessionlog =[NSString stringWithFormat: @"Match! Yayy! Bonus +%ld.", (long)bonus];
   [self matchChosenCards];
-  self.nonMatchedCards = nil;
 }
 
 - (void)chooseUpdate {
-//  self.lastSessionCards = [self chosenCards];
-//  self.lastSessionlog = @"Choosen.";
 }
 
 - (void)unchooseUpdate:(NSUInteger)index {
-//  self.lastSessionlog = @"Unchoosen.";
-//  id <Card> card = self.cards[index];
-//  self.lastSessionCards = @[card];
-  
   CardState * cardState = (CardState *)self.cardsState[index];
   cardState.chosen = NO;
 }
@@ -203,7 +173,7 @@
 }
 
 - (int)moreCardsCount {
-  return [self.cardDealer moreCardsToDeal:self.nonMatchedCards usingCardMatcher:self.gameMatcher];
+  return [self.cardDealer moreCardsToDeal:[self nonMatchedCards] usingCardMatcher:self.gameMatcher];
 }
 
 - (BOOL)addCards {
@@ -222,9 +192,6 @@
       added = NO;
       break;
     }
-  }
-  if (added) {
-    self.nonMatchedCards = nil;
   }
   return added;
 }
@@ -271,6 +238,11 @@ static const int kCOST_TO_CHOOSE = 1;
 
 - (NSUInteger)findCard:(id <Card>)card {
   return [self.cards indexOfObject:card];
+}
+
+
+- (NSUInteger)cardCount {
+  return [[self cards] count];
 }
 
 @end
